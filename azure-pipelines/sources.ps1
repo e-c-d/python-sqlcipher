@@ -22,7 +22,7 @@ function Get-FileFromInternet {
     $actual_hash = (Get-FileHash $temporary -Algorithm SHA512).Hash
     if ($actual_hash.ToUpper() -eq $sha512.ToUpper())
     {
-        Rename-Item $temporary $path
+        Move-Item $temporary $path
     }
     else
     {
