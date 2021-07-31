@@ -11,15 +11,15 @@ parameters:
 steps:
 - task: Cache@2
   inputs:
-    key: '"download" | "$(sha512)" | "$(download_filename)" | "$(uri)"'
-    path: "$(download_folder)"
-  displayName: Source cache $(download_folder)/$(download_filename)
+    key: '"download" | "${{ parameters.sha512 }}" | "${{ parameters.download_filename }}" | "${{ parameters.url }}"'
+    path: "${{ parameters.download_folder }}"
+  displayName: Source cache ${{ parameters.download_folder }}/${{ parameters.download_filename }}
 
 - powershell: |
     . "azure-pipelines/lib.ps1"
 
-    $d = "$(download_folder)"
+    $d = "${{ parameters.download_folder }}"
     New-Item -ItemType Directory -Force -Path $d
-    Get-FileFromInternet "$(url)" "$(sha512)" "$d\$(download_filename)"
+    Get-FileFromInternet "${{ parameters.url }}" "${{ parameters.sha512 }}" "$d\${{ parameters.download_filename }}"
 
-  displayName: Download source $(download_folder)/$(download_filename)
+  displayName: Download source ${{ parameters.download_folder }}/${{ parameters.download_filename }}
