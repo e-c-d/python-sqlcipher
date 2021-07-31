@@ -105,7 +105,7 @@ jobs:
 
       set NMAKE_OPTS=NO_TCL=1 USE_CRT_DLL=1 WIN32HEAP=1 ^
         LTLIBPATHS=^"/LIBPATH:$(Build.SourcesDirectory)\openssl^" ^
-        LTLIBS=^"%NMAKE_LTLIBS%^"
+        LTLIBS=^"libcrypto.lib libssl.lib^"
 
       nmake /f ..\makefile.msc sqlite3.c TOP=.. %NMAKE_OPTS%
       nmake /f ..\makefile.msc sqlite3.dll TOP=.. %NMAKE_OPTS%
