@@ -119,13 +119,23 @@ jobs:
 
   - task: CopyFiles@2
     inputs:
-      sourceFolder: '$(Build.SourcesDirectory)'
+      sourceFolder: '$(Build.SourcesDirectory)sqlcipher/build'
       contents: |
-        sqlcipher/build/sqlite3?(.exe|.dll|.pdb|.lib|.exp|.manifest|.h)
-        openssl/apps/openssl?(.exe|.cnf|.pdb|.exp)
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+        sqlite3?(.exe|.dll|.pdb|.lib|.exp|.manifest|.h)
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/sqlcipher'
       flattenFolders: true
-    displayName: Copy sqlite files
+    displayName: Copy sqlcipher files
+
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)/openssl/apps/openssl'
+      contents: |
+        openssl.exe
+        openssl.pdb
+        openssl.exp
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/openssl'
+      flattenFolders: true
+    displayName: Copy openssl executable
 
   - task: CopyFiles@2
     inputs:
@@ -135,9 +145,9 @@ jobs:
         *.pdb
         *.lib
         *.exp
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/openssl'
       flattenFolders: true
-    displayName: Copy files to artifact staging directory
+    displayName: Copy openssl libraries
 
   - task: PublishBuildArtifacts@1
     inputs:
