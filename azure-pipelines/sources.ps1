@@ -11,7 +11,8 @@ function Get-FileFromInternet {
 
     if (Test-Path $path) {
         # it's in cache
-        Copy-Item $path $temporary
+        Remove-Item $temporary -ErrorAction Ignore
+        Move-Item $path $temporary
     }
     else
     {
