@@ -55,7 +55,7 @@ jobs:
   - script: |
       cd openssl
       call "$(VCVARS)"
-      perl Configure VC-WIN64A-masm no-asm
+      perl Configure VC-WIN64A-masm no-asm no-unit-test
       nmake
     displayName: Build OpenSSL
 
