@@ -128,7 +128,7 @@ jobs:
 
   - task: CopyFiles@2
     inputs:
-      sourceFolder: '$(Build.SourcesDirectory)/openssl/apps/openssl'
+      sourceFolder: '$(Build.SourcesDirectory)/openssl/apps'
       contents: |
         openssl.exe
         openssl.pdb
