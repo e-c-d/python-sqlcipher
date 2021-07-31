@@ -122,8 +122,19 @@ jobs:
       sourceFolder: '$(Build.SourcesDirectory)'
       contents: |
         sqlcipher/build/sqlite3?(.exe|.dll|.pdb|.lib|.exp|.manifest|.h)
-        openssl/*?(.exe|.dll|.pdb|.lib|.exp)
         openssl/apps/openssl?(.exe|.cnf|.pdb|.exp)
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      flattenFolders: true
+    displayName: Copy sqlite files
+
+  - task: CopyFiles@2
+    inputs:
+      sourceFolder: '$(Build.SourcesDirectory)/openssl'
+      contents: |
+        *.dll
+        *.pdb
+        *.lib
+        *.exp
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
       flattenFolders: true
     displayName: Copy files to artifact staging directory
@@ -133,10 +144,3 @@ jobs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)'
       artifactName: "$(buildname)"
     displayName: Publish build artifacts
-
-  # - powershell: |
-  #     . $Env:CONDAPS1
-  #     conda activate chihiro
-  #     New-Item -Name build -ItemType directory
-  #     cmake -G "NMake Makefiles" -B build -DCMAKE_BUILD_TYPE=Release
-  #     cmake --build build
