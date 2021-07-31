@@ -29,11 +29,11 @@ jobs:
   pool:
     vmImage: 'windows-2019'
 
+  steps:
   - script: |
       dir /a-D /S /B .
     displayName: List files
 
-  steps:
   - task: ExtractFiles@1
     inputs:
       archiveFilePatterns: 'download\sqlcipher.tar.gz'
