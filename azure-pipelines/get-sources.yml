@@ -3,6 +3,7 @@ parameters:
   type: string
   default: "$(Pipeline.Workspace)/download"
 
+jobs:
 - job: get-sources
   variables:
     download_folder: "${{ parameters.download_folder }}"
