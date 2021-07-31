@@ -21,7 +21,7 @@ jobs:
     displayName: Source cache
 
   - powershell: |
-      . "sources.ps1"
+      . "azure-pipelines/sources.ps1"
 
       $d = "$(download_folder)"
       New-Item -ItemType Directory -Force -Path $d
