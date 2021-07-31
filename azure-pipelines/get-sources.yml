@@ -1,0 +1,25 @@
+parameters:
+- name: download_folder
+  type: string
+  default: "$(Pipeline.Workspace)/download"
+
+- job: get-sources
+  variables:
+    download_folder: "${{ parameters.download_folder }}"
+    SQLCIPHER_SHA512: "D80177CF658C145F7328BAFAC14BC2779AFA463FC94EF0A5E99B6654CF2EECE3088AC296949130E7263F52948913FFEAC253C47E33D91816E90CAF1788301A9A"
+    SQLCIPHER_URL: "https://github.com/sqlcipher/sqlcipher/archive/v4.4.3.tar.gz"
+
+  - task: Cache@2
+    inputs:
+      key: "download-$(SQLCIPHER_SHA512)"
+      path: "$(download_folder)"
+    displayName: Source cache
+
+  - powershell: |
+      . "sources.ps1"
+
+      $d = "$(download_folder)"
+      New-Item -ItemType Directory -Force -Path $d
+      Get-FileFromInternet "$(SQLCIPHER_URL)" "$(SQLCIPHER_SHA512)" "$d\sqlcipher.tar.gz"
+
+    displayName: Download sources
