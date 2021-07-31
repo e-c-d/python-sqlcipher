@@ -46,7 +46,8 @@ jobs:
     displayName: Rename
 
   - powershell: |
-    write-host "##vso[task.complete result=Failed;]exit early because testing"
+      write-host "##vso[task.complete result=Failed;]exit early because testing"
+    displayName: oooops
 
   - script: |
       call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars${{ parameters.arch }}.bat"
