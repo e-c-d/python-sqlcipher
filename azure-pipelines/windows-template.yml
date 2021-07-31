@@ -30,11 +30,7 @@ jobs:
     vmImage: 'windows-2019'
 
   steps:
-  - task: Cache@2
-    inputs:
-      key: "download-$(SQLCIPHER_SHA512)"
-      path: "download"
-    displayName: Source cache
+  - template: "get_sources.yml"
 
   - script: |
       dir /a-D /S /B .
