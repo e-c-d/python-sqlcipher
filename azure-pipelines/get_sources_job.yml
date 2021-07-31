@@ -1,5 +1,5 @@
 jobs:
-- job:
+- job: "get_sources"
   displayName: "Pre-cache sources"
   pool:
     vmImage: 'windows-2019'
