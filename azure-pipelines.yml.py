@@ -46,7 +46,11 @@ def define_conda_jobs():
 
 
 def main():
-    jobs = []
+    jobs = [
+        odict(
+            template="azure-pipelines/get-sources.yml",
+        ),
+    ]
     jobs.extend(define_conda_jobs())
 
     doc = {"jobs": jobs}
