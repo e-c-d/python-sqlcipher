@@ -14,7 +14,7 @@ parameters:
 
 jobs:
 - job:
-  dependsOn: get-sources
+  dependsOn: get_sources
   variables:
     buildname: "sqlcipher-python-ssl${{ parameters.openssl_version_name }}-\
       win${{ parameters.arch }}-${{ parameters.build_type }}"

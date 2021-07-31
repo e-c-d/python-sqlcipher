@@ -4,7 +4,7 @@ parameters:
   default: "$(Pipeline.Workspace)/download"
 
 jobs:
-- job: get-sources
+- job: get_sources
   variables:
     download_folder: "${{ parameters.download_folder }}"
     SQLCIPHER_SHA512: "D80177CF658C145F7328BAFAC14BC2779AFA463FC94EF0A5E99B6654CF2EECE3088AC296949130E7263F52948913FFEAC253C47E33D91816E90CAF1788301A9A"
