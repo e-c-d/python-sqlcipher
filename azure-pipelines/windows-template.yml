@@ -119,7 +119,7 @@ jobs:
 
   - task: CopyFiles@2
     inputs:
-      sourceFolder: '$(Build.SourcesDirectory)sqlcipher/build'
+      sourceFolder: '$(Build.SourcesDirectory)/sqlcipher/build'
       contents: |
         sqlite3?(.exe|.dll|.pdb|.lib|.exp|.manifest|.h)
       TargetFolder: '$(Build.ArtifactStagingDirectory)/sqlcipher'
