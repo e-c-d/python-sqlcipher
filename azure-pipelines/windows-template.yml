@@ -18,9 +18,7 @@ jobs:
   variables:
     buildname: "sqlcipher-python-ssl${{ parameters.openssl_version_name }}-\
       win${{ parameters.arch }}-${{ parameters.build_type }}"
-    DOWNLOAD_CACHE_FOLDER: "$(Pipeline.Workspace)/.download_cache"
-    SQLCIPHER_SHA512: "D80177CF658C145F7328BAFAC14BC2779AFA463FC94EF0A5E99B6654CF2EECE3088AC296949130E7263F52948913FFEAC253C47E33D91816E90CAF1788301A9A"
-    SQLCIPHER_URL: "https://github.com/sqlcipher/sqlcipher/archive/v4.4.3.tar.gz"
+    VCVARS: 'C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars${{ parameters.arch }}.bat'
 
   displayName: "Build sqlcipher \
     with OpenSSL ${{ parameters.openssl_version_name }} \
@@ -32,27 +30,41 @@ jobs:
   steps:
   - template: "get_sources.yml"
 
-  - script: |
-      dir /a-D /S /B .
-    displayName: List files
-
   - task: ExtractFiles@1
     inputs:
-      archiveFilePatterns: 'download\sqlcipher.tar.gz'
+      archiveFilePatterns: 'download-sqlcipher\sqlcipher.tar.gz'
       destinationFolder: 'tmp-source'
       cleanDestinationFolder: true
-    displayName: Extract
+    displayName: Extract sqlcipher
 
   - powershell: |
       Get-ChildItem -Path tmp-source\sqlcipher-* | Move-Item -Destination sqlcipher
     displayName: Rename
 
+  - task: ExtractFiles@1
+    inputs:
+      archiveFilePatterns: 'download-openssl\openssl.tar.gz'
+      destinationFolder: 'tmp-source'
+      cleanDestinationFolder: true
+    displayName: Extract openssl
+
   - powershell: |
-      write-host "##vso[task.complete result=Failed;]exit early because testing"
-    displayName: oooops
+      Get-ChildItem -Path tmp-source\openssl-* | Move-Item -Destination openssl
+    displayName: Rename
 
   - script: |
-      call "C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC\Auxiliary\Build\vcvars${{ parameters.arch }}.bat"
+      cd openssl
+      call "$(VCVARS)"
+      perl Configure VC-WIN64A-masm no-asm
+      nmake
+    displayName: Build OpenSSL
+
+  - script: |
+      dir /a-D /S /B .
+    displayName: List
+
+  - script: |
+      call "$(VCVARS)"
       cd sqlcipher
       md build
       cd build
@@ -89,10 +101,10 @@ jobs:
         -DSQLITE_THREADSAFE=1 ^
         -DSQLITE_USE_URI=1 ^
         ^
-        -I%CONDA_PREFIX%\Library\include
+        -I..\openssl
 
       set NMAKE_OPTS=NO_TCL=1 USE_CRT_DLL=1 WIN32HEAP=1 ^
-        LTLIBPATHS=^"/LIBPATH:%CONDA_PREFIX%\Library\lib^" ^
+        LTLIBPATHS=^"/LIBPATH:..\openssl^" ^
         LTLIBS=^"%NMAKE_LTLIBS%^"
 
       nmake /f ..\makefile.msc sqlite3.c TOP=.. %NMAKE_OPTS%
