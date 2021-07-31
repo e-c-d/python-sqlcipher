@@ -150,13 +150,10 @@ jobs:
     displayName: Copy openssl libraries
 
   - powershell: |
-      $r = Get-ChildItem -Path "$(Build.ArtifactStagingDirectory)" -Recurse | Get-FileHash -Algorithm SHA512
-
-      $r | Format-Table -AutoSize | Write-Output
-
-      $r | Select-Object -Property Hash, Path `
+      Get-ChildItem -Path "$(Build.ArtifactStagingDirectory)" -Recurse -File `
+        | Get-FileHash -Algorithm SHA512 | Select-Object -Property Hash, Path `
         | Export-Csv -Path sha512sums.csv -NoTypeInformation
-
+      Get-Content sha512sums.csv | Write-Output
       Move-Item sha512sums.csv "$(Build.ArtifactStagingDirectory)/"
     displayName: Compute SHA512 hashes of outputs
 
