@@ -97,7 +97,6 @@ jobs:
         -DSQLITE_OMIT_LOOKASIDE=1 ^
         -DSQLITE_SECURE_DELETE=1 ^
         -DSQLITE_SOUNDEX=1 ^
-        -DSQLITE_TEMP_STORE=1 ^
         -DSQLITE_THREADSAFE=1 ^
         -DSQLITE_USE_URI=1 ^
         ^
